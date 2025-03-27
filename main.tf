@@ -28,8 +28,8 @@ resource "azurerm_key_vault_secret" "secrets" {
     for s in local.calculated_secrets : s.secret_name => s
   }
 
-  name            = each.value.secret_name
-  value           = coalesce(each.value.secret_value, lookup(local.generated_passwords, each.key, null)
+  name = each.value.secret_name
+  value = coalesce(each.value.secret_value, lookup(local.generated_passwords, each.key, null)
   )
   key_vault_id    = var.key_vault_id
   content_type    = each.value.content_type
