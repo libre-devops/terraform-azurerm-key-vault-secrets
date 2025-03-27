@@ -1,19 +1,20 @@
-variable "location" {
-  description = "The location for this resource to be put in"
+variable "key_vault_id" {
+  description = "The ID of the Key Vault to store the secrets"
   type        = string
+  nullable    = false
 }
 
-variable "name" {
-  type        = string
-  description = "The name of the VNet gateway"
-}
-
-variable "rg_name" {
-  description = "The name of the resource group, this module does not create a resource group, it is expecting the value of a resource group already exists"
-  type        = string
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "A map of the tags to use on the resources that are deployed with this module."
+variable "key_vault_secrets" {
+  description = "List of secrets to be created"
+  type = list(object({
+    secret_name               = string
+    secret_value              = optional(string)
+    generate_random_password  = optional(bool, false)
+    random_length             = optional(number, 21)
+    content_type              = optional(string, "text/plain")
+    creation_date             = optional(string, null)
+    expiration_date           = optional(string, null)
+    expiry_days               = optional(number, 365)
+    tags                      = optional(map(string))
+  }))
 }
